@@ -1,0 +1,9 @@
+# Dependency directories 
+node\_modules/
+
+# Environment files
+.env
+
+# SSL certificate files
+cert.pem
+key.pem
