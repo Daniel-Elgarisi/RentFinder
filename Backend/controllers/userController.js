@@ -49,3 +49,36 @@ exports.updateUserDetails = async (req, res) => {
     res.status(500).send("Error updating user details.");
   }
 };
+
+exports.getPhoneNumber = (req, res) => {
+  const Email = req.params.Email;
+
+  if (!Email) {
+    return res.status(400).json({ message: "Email not provided" });
+  }
+
+  const sql = `SELECT PhoneNumber FROM Users WHERE Email = ?`;
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, [Email], (err, row) => {
+      if (err) {
+        reject(err);
+      } else if (row) {
+        resolve(row.PhoneNumber);
+      } else {
+        reject(new Error("User not found"));
+      }
+    });
+  })
+    .then((PhoneNumber) => {
+      res.status(200).json({ PhoneNumber: PhoneNumber });
+    })
+    .catch((err) => {
+      console.log(err.message);
+      if (err.message === "User not found") {
+        res.status(404).json({ message: "User not found" });
+      } else {
+        res.status(500).json({ message: "An error occurred: " + err.message });
+      }
+    });
+};
