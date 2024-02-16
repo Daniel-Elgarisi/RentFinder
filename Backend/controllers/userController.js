@@ -1,7 +1,5 @@
-// userController.js
-
 const bcrypt = require("bcrypt");
-const db = require("../DB"); // Adjust the path as necessary
+const db = require("../DB");
 
 const saltRounds = 10;
 
@@ -11,7 +9,6 @@ exports.updateUserDetails = async (req, res) => {
   let queryParams = [];
   let updateFields = [];
 
-  // Update email and phone number regardless; they are either changed or remain the same
   if (newEmail !== undefined) {
     updateFields.push(`Email = ?`);
     queryParams.push(newEmail);
@@ -22,7 +19,6 @@ exports.updateUserDetails = async (req, res) => {
     queryParams.push(newPhoneNumber);
   }
 
-  // Only update the password if a new one is provided
   if (newPassword) {
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     updateFields.push(`Password = ?`);
@@ -36,7 +32,7 @@ exports.updateUserDetails = async (req, res) => {
   let updateQuery = `UPDATE Users SET ${updateFields.join(
     ", "
   )} WHERE Email = ?`;
-  queryParams.push(email); // Assuming email is used as a unique identifier for WHERE clause
+  queryParams.push(email);
 
   try {
     db.run(updateQuery, queryParams, function (err) {
