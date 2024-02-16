@@ -1,12 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
 
+.update-details-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* This ensures the container takes at least the full viewport height */
+    width: 100vw; /* This ensures the container takes the full viewport width */
+}
+
 .wrapper, .wrapper * {
     box-sizing: border-box;
 }
 
-.wrapper{
+.wrapper {
     width: 420px;
-    background: rgba(0, 0, 0, 0.10);;
+    background: rgba(0, 0, 0, 0.10);
     border: 2px solid rgba(225, 225, 225, .2);
     backdrop-filter: blur(30px);
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
@@ -14,7 +22,10 @@
     border-radius: 10px;
     padding: 30px 40px;
     direction: rtl;
+    /* Ensure wrapper is centered in flex container */
+    margin: auto;
 }
+
 
 .wrapper h1 {
     font-size: 36px;

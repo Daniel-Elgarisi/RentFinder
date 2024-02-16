@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+.title-container {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+}
+
+.main-title {
+    font-family: "Fredoka", sans-serif;
+    opacity: 0;
+    animation: fadeIn 2s ease-out forwards;
+    color: #ffffff;
+    font-size: 50px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px #000, 
+                 2px 2px 0px rgba(0,0,0,0.8),
+                 3px 3px 0px rgba(0,0,0,0.6),
+                 4px 4px 0px rgba(0,0,0,0.4),
+                 5px 5px 0px rgba(0,0,0,0.2);
+}
+
+.slogan {
+    font-family: "Fredoka", sans-serif;
+    opacity: 0;
+    animation: slideUpFadeIn 2s ease-out 1s forwards;
+    color: #f7dbabea; 
+    font-size: 30px;
+    margin-top: -10px;
+    font-weight:600;
+    text-shadow: 1px 1px 0px #000, 
+    2px 2px 0px rgba(0,0,0,0.8),
+    3px 3px 0px rgba(0,0,0,0.6),
+    4px 4px 0px rgba(0,0,0,0.4),
+    5px 5px 0px rgba(0,0,0,0.2);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

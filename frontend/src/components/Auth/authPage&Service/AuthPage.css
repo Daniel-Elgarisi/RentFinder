@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+.auth-container{
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 100vh;
+   background: url('../../Assets/houses background.jpg') no-repeat center center fixed;
+   background-size: cover;
+   width: 100vw;
+   font-family: "Fredoka", sans-serif;
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+}
