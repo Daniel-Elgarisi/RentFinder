@@ -12,7 +12,7 @@ function LoginForm({ onLogin, onToggleView }) {
     const isValidLength = password.length >= 8;
 
     if (!isValidLength || !hasUpperCase || !hasDigit) {
-      alert("Password must be at least 8 characters long, include at least one digit and one uppercase letter.");
+      alert("# הסיסמה חייבת להיות באורך של לפחות 8 תווים, לכלול לפחות ספרה אחת ואות גדולה אחת.");
       return false;
     }
     return true;

@@ -1,0 +1,222 @@
+.ads-container {
+    padding: 20px;
+    margin-top: 60px; /* Adjust according to your navbar's height */
+    direction: rtl; /* Right-to-left layout */
+}
+
+.post-new-ad {
+    background-color: #2e2e2ec9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto 20px auto;
+    font-family: "Fredoka", sans-serif;
+    font-size: 15px;
+    width: max-content;
+    box-shadow: 0 2px #2e2e2ec9, 0 3px #2e2e2e3f;
+    transition: all 0.3s ease;
+    background-image: linear-gradient(to bottom, #3e3e3ebb, #1c1c1cd0);
+}
+
+.post-new-ad:hover {
+    box-shadow: 0 2px #424242f5, 0 3px #a1a1a16b; /* Adjust shadow for clicked effect */
+    transform: translateY(2px); /* Simulates button being pressed */
+}
+
+.button-icon {
+    margin-left: 10px; /* Adjust the space as needed */
+}
+
+.ads-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center items horizontally */
+    gap: 20px;
+}
+
+.ad-box {
+    border: 1.5px solid rgba(225, 225, 225, 0.139);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 4px rgba(0, 0, 0, 0.2), 0 3px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.10);
+    transition: all 0.3s ease;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.1));
+    display: flex;
+    flex-direction: column;
+}
+
+.ad-box:hover {
+    box-shadow: 0 2px rgba(0, 0, 0, 0.2), 0 3px rgba(0, 0, 0, 0.3); /* Adjust shadow for a lifted effect */
+    transform: translateY(-10px); /* Simulates the box being lifted */
+}
+
+.ad-image {
+    width: 100%;
+    height: 130px; /* Reduce the height for images */
+    object-fit: cover;
+}
+
+.ad-details {
+    padding: 8px;
+    padding-bottom: 16px; /* Increased padding at the bottom */
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #fff;
+    font-family: "Fredoka", sans-serif;
+    font-size: 15px; /* Adjust font size as needed */
+}
+
+.ad-price, .ad-location {
+    text-align: center;
+    margin-bottom: 10px; /* Space between price/location and the details row */
+}
+
+.details-row {
+    display: flex;
+    justify-content: space-evenly; /* Evenly space out the details */
+    padding: 0 8px; /* Maintain padding on sides */
+    margin-top: 10px; /* Space above the details row */
+}
+
+.details-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-details-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0);
+    display: flex;
+    flex-direction: row; /* Image on left, details on right */
+    align-items: flex-start; /* Align items at the top */
+    overflow: hidden;
+    z-index: 1050; /* Ensure modal is above other content */
+}
+
+
+.modal-content {
+    background: rgb(255, 255, 255); /* Slightly whiter than ads for focus */
+    border: 2px solid rgba(225, 225, 225, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    color: #000; /* Text color inside modal */
+    padding: 18px;
+    width: 80%;
+    max-width: 550px; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "Fredoka", sans-serif; /* Assuming Fredoka is used for modal content */
+}
+
+.modal-inner-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #000000;
+    cursor: pointer;
+}
+
+.modal-ad-image {
+    flex-shrink: 0;
+    width: 30%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    max-width: 100%;
+    margin-bottom: 8px;
+}
+
+.modal-ad-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-ad-info.ad-price{
+    margin-bottom: -20px;
+}
+
+.modal-ad-info .ad-price{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-ad-info h3{
+    margin-bottom: 3px;
+    margin-top: 2px;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.modal-ad-info .ad-description{
+    text-align: right;
+}
+
+.modal-ad-info .ad-description h3{
+    margin-top: 10px;
+    margin-bottom: -10px;
+    font-weight: 600;
+}
+
+.modal-ad-info .entry_date{
+    margin-top: -30px;
+    text-align: right;
+    font-weight: 600;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns for features */
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-ad-info, .ad-price, .details-row, .features-grid, .feature-item {
+    text-align: center;
+    margin: 1px 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    direction: rtl; /* Ensures right-to-left layout */
+    justify-content: flex-start; /* Adjusts content alignment */
+    gap: 5px;
+    margin: 5px;
+}
+
+.feature-icon {
+    color: gray; /* Default color for 'no' */
+}
+
+.feature-icon.yes {
+    color: black; /* Color for 'yes' */
+}
+
+.modal-ad-info .lease{
+    font-weight: 500;
+    color: #000;
+}

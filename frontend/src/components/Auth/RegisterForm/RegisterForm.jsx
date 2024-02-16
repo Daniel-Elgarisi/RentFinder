@@ -36,14 +36,14 @@ function RegisterForm({ onRegister, onToggleView }) {
       onRegister(firstName, lastName, emailAddress, phoneNumber, password);
     else if (!isPhoneOk && isPasswordOk) {
       setPhoneNumber("");
-      alert("# Phone number must consist of digits only.");
+      alert("# מספר טלפון חייב להיות מורכב מספרות בלבד.");
     }
     else if (isPhoneOk && !isPasswordOk) {
       setPassword("");
-      alert("# Password must be at least 8 characters long, include at least one digit and one uppercase letter.");
+      alert("# הסיסמה חייבת להיות באורך של לפחות 8 תווים, לכלול לפחות ספרה אחת ואות גדולה אחת.");
     }
     else {
-      alert("# Phone number must consist of digits only.\n# Password must be at least 8 characters long, include at least one digit and one uppercase letter.");
+      alert("# מספר טלפון חייב להיות מורכב מספרות בלבד.\n# הסיסמה חייבת להיות באורך של לפחות 8 תווים, לכלול לפחות ספרה אחת ואות גדולה אחת.");
       setPhoneNumber("");
       setPassword("");
     }
@@ -52,31 +52,31 @@ function RegisterForm({ onRegister, onToggleView }) {
   return (
     <div className="wrapper">
       <form onSubmit={handleSubmit}>
-        <h1>Register</h1>
+        <h1>הרשמה</h1>
         <div className="input-box">
-          <input type="text" placeholder="First Name" required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          <input type="text" placeholder="שם פרטי" required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           <FaRegUser className="icon" />
         </div>
         <div className="input-box">
-          <input type="text" placeholder="Last Name" required value={lastName} onChange={(e) => setLastName(e.target.value)} />
+          <input type="text" placeholder="שם משפחה" required value={lastName} onChange={(e) => setLastName(e.target.value)} />
           <FaRegUser className="icon" />
         </div>
         <div className="input-box">
-          <input type="email" placeholder="Email" required value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} />
+          <input type="email" placeholder="אימייל" required value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} />
           <MdEmail className="icon" />
         </div>
         <div className="input-box">
-          <input type="tel" placeholder="Phone Number" required value={phoneNumber} minLength={9} maxLength={10} onChange={(e) => setPhoneNumber(e.target.value)} />
+          <input type="tel" placeholder="טלפון" required value={phoneNumber} minLength={9} maxLength={10} onChange={(e) => setPhoneNumber(e.target.value)} />
           <FaPhone className="icon" />
         </div>
         <div className="input-box">
-          <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" placeholder="סיסמא" required value={password} onChange={(e) => setPassword(e.target.value)} />
           <FaLock className="icon" />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit">הרשם</button>
         <div className="register-link">
           <p>
-            Already have an account? <a onClick={onToggleView}>Login</a>
+          כבר יש לך חשבון? <a onClick={onToggleView}>התחבר</a>
           </p>
         </div>
       </form>

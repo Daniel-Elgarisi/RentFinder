@@ -1,0 +1,76 @@
+
+.navbar {
+    background-color: #00000096;
+    height: 35px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center;
+    position: fixed; 
+    top: 0;
+    right: 0;
+}
+
+.menu-bars {
+    margin-right: 20px; /* Ensure this matches the sidebar icon's right margin */
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Sidebar adjustments */
+.nav-menu {
+    background-color: #000000ea;
+    width: 232px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    transition: 850ms;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.nav-menu.active {
+    right: 0;
+    transition: 350ms;
+}
+
+/* Menu item adjustments */
+.nav-text {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    direction: rtl; 
+}
+
+/* Generalize styling for both Link and div elements */
+.nav-text > a, .nav-text > div {
+    text-decoration: none;
+    color: #f5f5f5;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding-right: 20px;
+    cursor: pointer; /* Ensure div is clickable */
+}
+
+.nav-text > a:hover, .nav-text > div:hover {
+    background-color: #372926b7;
+    height: 40px;
+    width: 100%; /* Ensure hover effect covers the full width */
+}
+
+/* Adjusting for icon and text alignment */
+.nav-text > a span, .nav-text > div span {
+    margin-right: 20px; /* Space between icon and text */
+}
+
+.navbar-toggle {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding-right: 20px;
+}
