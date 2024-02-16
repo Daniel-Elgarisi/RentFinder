@@ -3,7 +3,7 @@ const express = require("express");
 // const db = require("./DB");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
-const userRoutes = require("./routes/userRoutes"); // Import user routes
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
