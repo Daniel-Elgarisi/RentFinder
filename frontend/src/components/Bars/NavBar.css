@@ -20,7 +20,7 @@
 /* Sidebar adjustments */
 .nav-menu {
     background-color: #000000ea;
-    width: 232px;
+    width: 280px;
     height: 100vh;
     position: fixed;
     top: 0;
@@ -48,7 +48,7 @@
 .nav-text > a, .nav-text > div {
     text-decoration: none;
     color: #f5f5f5;
-    font-size: 16px;
+    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: flex-start;

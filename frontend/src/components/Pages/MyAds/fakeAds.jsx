@@ -23,7 +23,8 @@ export const fakeAds = [
             furnished: "no",
             parking: "yes"
         },
-        leaseContract: "path/to/leaseContract.pdf"
+        leaseContract: "path/to/leaseContract.pdf",
+        viewsAmount: 300
     },
     {
         id: 2,
@@ -49,7 +50,8 @@ export const fakeAds = [
             furnished: "no",
             parking: "yes"
         },
-        leaseContract: "path/to/leaseContract.pdf"
+        leaseContract: "path/to/leaseContract.pdf",
+        viewsAmount: 300
     },
     {
         id: 3,
@@ -75,7 +77,8 @@ export const fakeAds = [
             furnished: "no",
             parking: "yes"
         },
-        leaseContract: "path/to/leaseContract.pdf"
+        leaseContract: "path/to/leaseContract.pdf",
+        viewsAmount: 300
     },
     {
         id: 4,
@@ -101,6 +104,7 @@ export const fakeAds = [
             furnished: "no",
             parking: "yes"
         },
-        leaseContract: "path/to/leaseContract.pdf"
+        leaseContract: "path/to/leaseContract.pdf",
+        viewsAmount: 300
     },
 ];

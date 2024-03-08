@@ -47,7 +47,7 @@ function NavBar({ onAction }) {
                                 ) : (
                                     <div style={{ cursor: 'pointer' }}>
                                         {item.icon}
-                                        <span>{item.title}</span>
+                                        <span style={{'fontFamily': "Fredoka"}}>{item.title}</span>
                                     </div>
                                 )}
                             </li>

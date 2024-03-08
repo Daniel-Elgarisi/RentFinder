@@ -3,6 +3,7 @@ import NavBar from '../../Bars/NavBar';
 import CustomTitle from '../../CustomTitle/CustomTitle';
 import UpdateUserDetails from '../UpdateUserDetails/UpdateUserDetails';
 import MyAds from '../MyAds/MyAds';
+import AllAds from '../AllAds/AllAds';
 import './HomePage.css';
 
 function HomePage() {
@@ -29,6 +30,7 @@ function HomePage() {
             {currentView === 'homepage' && <CustomTitle />}
             {currentView === 'UpdateUserDetails' && <UpdateUserDetails />}
             {currentView === 'MyAds' && <MyAds />}
+            {currentView === 'AllAds' && <AllAds />}
         </div>
     );
 }

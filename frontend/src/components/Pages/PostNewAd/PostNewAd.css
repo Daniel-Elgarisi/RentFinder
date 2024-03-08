@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+.post-new-ad-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  font-family: "Fredoka", sans-serif;
+}
+
+.post-new-ad-modal .modal-content {
+  background: rgba(0, 0, 0, 0.20);
+  backdrop-filter: blur(30px); /* Blur effect for the background */
+  border: 2px solid rgba(225, 225, 225, 0.192); /* Subtle border for definition */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.151); /* Soft shadow for depth */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px;
+  max-width: 720px;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  direction: rtl;
+  overflow-y: auto;
+  color: white;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.post-new-ad-form h2 {
+  font-size: 36px;
+  font-weight: 600;
+  text-align: center;
+  font-family: "Fredoka", sans-serif;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.address-inputs {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-right: -9px;
+}
+
+.street-input{
+  flex-grow: 1;
+  width: 97px;
+  margin-right: -10px;
+}
+
+.house-number-input {
+  flex-grow: 1;
+  margin-right: -10px;
+  width: 22px;
+}
+
+.post-new-ad-form input,
+.post-new-ad-form textarea,
+.post-new-ad-form button {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ffffff83;
+  border-radius: 5px;
+  direction: rtl;
+  font-family: "Fredoka", sans-serif;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.801);
+}
+
+.post-new-ad-form input:last-child {
+  margin-right: 0;
+}
+
+.post-new-ad-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.post-new-ad-form textarea {
+  height: 50px;
+  width: 94.5%;
+  margin-right: 10px;
+}
+
+.features-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0px;
+  margin-top: -5px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.feature-icon,
+.feature-icon-active {
+  width: 20px;
+  height: 20px;
+}
+
+.feature-item span {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.feature-item.active .feature-icon-active,
+.feature-item .feature-icon {
+  color: white;
+}
+
+.feature-item .feature-icon {
+  color: #99989869;
+}
+
+.modal-content {
+  padding: 28px;
+  overflow: hidden;
+}
+
+.form-column,
+.address-inputs input {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.form-column input[type="date"] {
+  text-align: right;
+  color: rgba(255, 255, 255, 0.801);
+}
+
+.features-section {
+  margin-right: 20%;
+}
+
+.post-new-ad-form label {
+  border: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 4px;
+  margin-bottom: 5px;
+  font-family: "Fredoka", sans-serif;
+  font-size: 15px;
+}
+
+.post-new-ad-form button {
+  background-color: #fafafa;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto 0px auto;
+  font-family: "Fredoka", sans-serif;
+  font-size: 15px;
+  width: max-content;
+  box-shadow: 0 2px #ffffff85, 0 3px #8181813f;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(to bottom, #000000b2, #5e5e5ec0);
+  margin-top: 20px;
+}
+
+.post-new-ad-form input::placeholder, 
+.post-new-ad-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.801); /* Changes placeholder text color to white */
+    opacity: 1; /* Ensures placeholder text color is not reduced */
+}
+
+.file-upload-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.801); /* Adjust color as needed */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ffffff83;
+  border-radius: 5px;
+  direction: rtl;
+  font-family: "Fredoka", sans-serif;
+  font-size: 15px;
+  background-color: transparent;
+}
+
+.file-upload-container svg {
+  cursor: pointer;
+}
+
+
