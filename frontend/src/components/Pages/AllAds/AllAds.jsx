@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fakeAds } from './fakeAds';
-import { MdOutlinePostAdd } from "react-icons/md";
-import { FaHouseUser } from "react-icons/fa";
-import WatchMyAds from '../WatchMyAds/WatchMyAds';
-import PostNewAd from '../PostNewAd/PostNewAd';
-import './MyAds.css';
+import { fakeAds } from '../MyAds/fakeAds';
+import { MdOutlineHomeWork } from "react-icons/md";
+import './AllAds.css';
 
-const MyAds = () => {
+const AllAds = () => {
     const [ads, setAds] = useState(fakeAds);
     const [selectedAd, setSelectedAd] = useState(null);
-    const [isPostingNewAd, setIsPostingNewAd] = useState(false);
     const closeDetails = () => setSelectedAd(null);
 
     useEffect(() => {
@@ -21,32 +17,12 @@ const MyAds = () => {
         localStorage.setItem('ads', JSON.stringify(ads));
     }, [ads]);
 
-    const deleteAd = (id) => {
-        const updatedAds = ads.filter(ad => ad.id !== id);
-        setAds(updatedAds);
-        setSelectedAd(null);
-    };
-
-    const handlePostNewAdClick = () => {
-        setIsPostingNewAd(true);
-    };
-
-    if (selectedAd)
-        return <WatchMyAds selectedAd={selectedAd} onClose={closeDetails} onDelete={deleteAd} />;
-
-    if (isPostingNewAd)
-        return <PostNewAd onClose={() => setIsPostingNewAd(false)} />;
-
     return (
         <div className="ads-container">
             <div className="title-with-icon">
-                <h3>המודעות שלי</h3>
-                <FaHouseUser size={40} color='#cdc2b2' className='icon-shadow'/>
+                <h3>מודעות נדל"ן להשכרה</h3>
+                <MdOutlineHomeWork size={60} color='#cdc2b2' className='icon-shadow'/>
             </div>
-            <button className="post-new-ad" onClick={handlePostNewAdClick}>
-                <MdOutlinePostAdd className="button-icon" />
-                פרסום מודעה חדשה
-            </button>
             <div className="ads-grid">
                 {ads.map((ad) => (
                     <div key={ad.id} className="ad-box" onClick={() => setSelectedAd(ad)}>
@@ -67,4 +43,4 @@ const MyAds = () => {
     );
 };
 
-export default MyAds;
+export default AllAds;

@@ -32,6 +32,11 @@
     font-weight: 600;
     text-align: center;
     font-family: "Fredoka", sans-serif;
+    text-shadow: 1px 1px 0px #000, 
+    2px 2px 0px rgba(0,0,0,0.4),
+    3px 3px 0px rgba(0,0,0,0.3),
+    4px 4px 0px rgba(0,0,0,0.2),
+    5px 5px 0px rgba(0,0,0,0.1);
 }
 
 .wrapper .input-box{

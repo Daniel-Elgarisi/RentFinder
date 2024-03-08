@@ -11,6 +11,12 @@ export const SideBarData = [
         cName: 'nav-text'
     },
     {
+        title: 'מודעות נדל"ן להשכרה',
+        action: 'AllAds',
+        icon: <RiAdvertisementFill />,
+        cName: 'nav-text'
+    },
+    {
         title: 'המודעות שלי',
         action: 'MyAds',
         icon: <RiAdvertisementFill />,
