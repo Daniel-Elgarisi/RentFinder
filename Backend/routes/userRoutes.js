@@ -1,7 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const userController = require("../controllers/userController");
+const {
+  updateUserDetails,
+  getPhoneNumber,
+} = require("../controllers/userController");
 
-router.post("/update-details", userController.updateUserDetails);
-router.get("/get-PhoneNumber/:Email", userController.getPhoneNumber);
+router.post("/update-details", updateUserDetails);
+router.get("/get-PhoneNumber/:Email", getPhoneNumber);
+
 module.exports = router;
