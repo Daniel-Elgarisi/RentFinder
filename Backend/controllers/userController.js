@@ -4,22 +4,19 @@ const db = require("../DB");
 const saltRounds = 10;
 
 exports.updateUserDetails = async (req, res) => {
-  const { email, newPassword, newEmail, newPhoneNumber } = req.body;
+  const { email, newPassword, newPhoneNumber } = req.body;
 
   let queryParams = [];
   let updateFields = [];
 
-  if (newEmail !== undefined) {
-    updateFields.push(`Email = ?`);
-    queryParams.push(newEmail);
-  }
-
-  if (newPhoneNumber !== undefined) {
+  if (newPhoneNumber) {
+    // Check if newPhoneNumber is truthy to prevent empty updates
     updateFields.push(`PhoneNumber = ?`);
     queryParams.push(newPhoneNumber);
   }
 
   if (newPassword) {
+    // Check if newPassword is truthy to prevent empty updates
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     updateFields.push(`Password = ?`);
     queryParams.push(hashedPassword);
@@ -37,15 +34,17 @@ exports.updateUserDetails = async (req, res) => {
   try {
     db.run(updateQuery, queryParams, function (err) {
       if (err) {
+        console.error("Failed to update user details:", err.message);
         return res.status(500).send("Failed to update user details.");
       }
       if (this.changes > 0) {
         res.send("User details updated successfully.");
       } else {
-        res.send("No user found with the provided identifier.");
+        res.send("No user found with the provided email.");
       }
     });
   } catch (error) {
+    console.error("Error updating user details:", error);
     res.status(500).send("Error updating user details.");
   }
 };
