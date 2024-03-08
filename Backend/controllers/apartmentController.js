@@ -2,6 +2,7 @@ const db = require("../DB");
 const path = require("path");
 
 const insertApartmentAd = (req, res) => {
+  const Email = req.params.Email;
   const {
     address,
     city,
@@ -28,10 +29,10 @@ const insertApartmentAd = (req, res) => {
   const featuresToInt = (feature) => (feature ? 1 : 0);
 
   const sql = `INSERT INTO MyRentalAds (
-      address, city, rooms, floor, price, square_meter, description, 
-      entryDate, elevator, blending, renovated, disabledAccess, bars, MMD, airConditioner, warehouse, 
-      solarHeater, furnished, parking, IsRented,viewsAmount
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)`;
+    address, city, rooms, floor, price, square_meter, description, 
+    entryDate, elevator, blending, renovated, disabledAccess, bars, MMD, airConditioner, warehouse, 
+    solarHeater, furnished, parking, IsRented, viewsAmount, user_email) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?)`;
 
   const values = [
     address,
@@ -53,8 +54,12 @@ const insertApartmentAd = (req, res) => {
     featuresToInt(solarHeater),
     featuresToInt(furnished),
     featuresToInt(parking),
-    viewsAmount,
+    // viewsAmount,
+    Email,
   ];
+
+  console.log(viewsAmount);
+  console.log("values", values);
 
   db.run(sql, values, function (err) {
     if (err) {
@@ -100,7 +105,7 @@ const savePDF = (req, res) => {
 
 const addPhotoToApartment = (req, res) => {
   const { id } = req.body;
-
+  console.log("id", id);
   if (!req.files || req.files.length === 0) {
     return res.status(400).send("At least one photo is required.");
   }
@@ -131,15 +136,22 @@ const addPhotoToApartment = (req, res) => {
   });
 };
 
-const getAllAPartments = (req, res) => {
-  const sql = "SELECT * FROM MyRentalAds WHERE IsRented = 0";
+const getAllApartments = (req, res) => {
+  const sql = `
+  SELECT a.*, u.FirstName, u.PhoneNumber
+  FROM MyRentalAds a
+  JOIN Users u ON a.user_email = u.Email
+  WHERE a.IsRented = 0`;
 
   db.all(sql, [], (err, rows) => {
     if (err) {
       console.error("Database error:", err.message);
       res.status(500).send("Error fetching available apartments");
+    }
+    if (rows.length === 0) {
+      return res.status(404).send("No available apartments found");
     } else {
-      res.json(rows);
+      return res.status(200).json(rows);
     }
   });
 };
@@ -192,11 +204,33 @@ const incrementApartmentViews = (req, res, next) => {
   });
 };
 
+const getAllAdsForOwner = (req, res) => {
+  const Email = req.params.Email;
+
+  const sql = "SELECT * FROM MyRentalAds WHERE user_email = ?";
+
+  db.all(sql, [Email], (err, rows) => {
+    if (err) {
+      console.error("Database error:", err.message);
+      res.status(500).send("Error fetching owner's apartment ads");
+    }
+
+    if (rows.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No ads found for the provided email" });
+    } else {
+      return res.status(200).json(rows);
+    }
+  });
+};
+
 module.exports = {
   insertApartmentAd,
   savePDF,
   addPhotoToApartment,
-  getAllAPartments,
+  getAllApartments,
   getSingleApartmentInformation,
   incrementApartmentViews,
+  getAllAdsForOwner,
 };
