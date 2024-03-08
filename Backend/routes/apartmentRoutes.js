@@ -3,16 +3,17 @@ const express = require("express");
 const router = express.Router();
 const { upload, uploadPhotos } = require("../utils/multerConfig");
 const {
-  getAllAPartments,
+  getAllApartments,
   insertApartmentAd,
   savePDF,
   addPhotoToApartment,
   getSingleApartmentInformation,
   incrementApartmentViews,
+  getAllAdsForOwner,
 } = require("../controllers/apartmentController");
 
-router.get("/display-all-apartments", getAllAPartments);
-router.post("/insert-apartment-ad", insertApartmentAd);
+router.get("/display-all-apartments", getAllApartments);
+router.post("/insert-apartment-ad/:Email", insertApartmentAd);
 router.post("/save-pdf", upload.single("file"), savePDF);
 router.post("/add-apartment-photos", uploadPhotos, addPhotoToApartment);
 router.get(
@@ -20,6 +21,6 @@ router.get(
   incrementApartmentViews,
   getSingleApartmentInformation
 );
-// router.post("/update-apartmentViewsAmount", );
+router.get("/get-allAdsForOwner/:Email", getAllAdsForOwner);
 
 module.exports = router;
