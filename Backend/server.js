@@ -4,12 +4,12 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const apartmentRoutes = require("./routes/apartmentRoutes");
-
+const path = require("path");
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
+app.use("/Photos", express.static(path.join(__dirname, "Photos")));
 
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
