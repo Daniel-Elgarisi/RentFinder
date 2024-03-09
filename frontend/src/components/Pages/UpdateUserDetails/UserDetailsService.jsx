@@ -5,6 +5,7 @@ const API_BASE_URL = "http://localhost:5000/users";
 export const fetchUserDetails = async (userEmail) => {
   try {
     const encodedEmail = encodeURIComponent(userEmail);
+    console.log(encodedEmail);
     const response = await axios.get(
       `${API_BASE_URL}/get-PhoneNumber/${encodedEmail}`
     );
