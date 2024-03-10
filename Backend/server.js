@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/Photos", express.static(path.join(__dirname, "Photos")));
+app.use("/Contracts", express.static(path.join(__dirname, "Contracts")));
 
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);

@@ -10,6 +10,7 @@ const {
   getSingleApartmentInformation,
   incrementApartmentViews,
   getAllAdsForOwner,
+  deleteApartmentAd,
 } = require("../controllers/apartmentController");
 
 router.get("/display-all-apartments", getAllApartments);
@@ -22,5 +23,6 @@ router.get(
   getSingleApartmentInformation
 );
 router.get("/get-allAdsForOwner/:Email", getAllAdsForOwner);
+router.delete("/delete-apartmentAd/:ad_id", deleteApartmentAd);
 
 module.exports = router;
