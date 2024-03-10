@@ -176,31 +176,33 @@ const getSingleApartmentInformation = (req, res) => {
 
 const incrementApartmentViews = (req, res, next) => {
   const ad_id = parseInt(req.params.ad_id, 10);
+  const currentUserEmail = req.headers["x-user-email"];
+  console.log("ad_id", ad_id);
+  console.log("currentUserEmail", currentUserEmail);
+  if (!currentUserEmail) {
+    return res.status(400).send("User email header is missing.");
+  }
 
-  const checkSql = `SELECT 1 FROM MyRentalAds WHERE id = ?`;
-  db.get(checkSql, [ad_id], function (checkErr, checkRow) {
+  const checkSql = `SELECT user_email FROM MyRentalAds WHERE id = ?`;
+  db.get(checkSql, [ad_id], (checkErr, checkRow) => {
     if (checkErr) {
       console.error("Database error during check:", checkErr.message);
       return res.status(500).send("Error checking apartment existence");
     }
     if (!checkRow) {
       return res.status(404).send("Apartment not found");
-    } else {
+    }
+    if (checkRow.user_email !== currentUserEmail) {
       const updateSql = `UPDATE MyRentalAds SET viewsAmount = viewsAmount + 1 WHERE id = ?`;
-      db.run(updateSql, [ad_id], function (updateErr) {
+      db.run(updateSql, [ad_id], (updateErr) => {
         if (updateErr) {
           console.error("Database error during update:", updateErr.message);
           return res.status(500).send("Error updating views count");
         }
         console.log(`Increased view count for apartment ID ${ad_id}`);
-
-        if (this.changes > 0) {
-          next();
-        } else {
-          res.status(404).send("No apartment found with the provided ID.");
-        }
       });
     }
+    next();
   });
 };
 
@@ -225,6 +227,26 @@ const getAllAdsForOwner = (req, res) => {
   });
 };
 
+const deleteApartmentAd = (req, res) => {
+  const ad_id = parseInt(req.params.ad_id, 10);
+  console.log("ad_id", ad_id);
+  const sql = "DELETE FROM MyRentalAds WHERE id = ?";
+
+  db.run(sql, [ad_id], function (err) {
+    if (err) {
+      console.error("Database error:", err.message);
+      return res.status(500).send("Failed to delete apartment ad.");
+    }
+    if (this.changes > 0) {
+      return res.status(200).send("Apartment ad deleted successfully.");
+    } else {
+      return res
+        .status(404)
+        .send("Apartment ad not found for the provided user.");
+    }
+  });
+};
+
 module.exports = {
   insertApartmentAd,
   savePDF,
@@ -233,4 +255,5 @@ module.exports = {
   getSingleApartmentInformation,
   incrementApartmentViews,
   getAllAdsForOwner,
+  deleteApartmentAd,
 };
