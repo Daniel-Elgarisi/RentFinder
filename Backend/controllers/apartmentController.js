@@ -159,8 +159,12 @@ const getAllApartments = (req, res) => {
 const getSingleApartmentInformation = (req, res) => {
   const ad_id = parseInt(req.params.ad_id, 10);
 
-  const sql = `SELECT * FROM MyRentalAds WHERE id = ?`;
-
+  const sql = `
+  SELECT a.*, u.FirstName, u.PhoneNumber
+  FROM MyRentalAds a
+  JOIN Users u ON a.user_email = u.Email
+  WHERE a.id = ? AND a.IsRented = 0
+  `;
   db.get(sql, [ad_id], (err, row) => {
     if (err) {
       console.error("Database error:", err.message);
@@ -247,6 +251,143 @@ const deleteApartmentAd = (req, res) => {
   });
 };
 
+const sendRequestOfInterest = (req, res) => {
+  const ad_id = parseInt(req.params.ad_id, 10);
+  const { Email, notes } = req.body;
+  console.log("ad_id: ", ad_id);
+  console.log("Email: ", Email, "notes: ", notes);
+
+  if (isNaN(ad_id)) {
+    return res.status(400).json({ message: "Apartment ID must be a number." });
+  }
+
+  const sql = `INSERT INTO RequestsOfInterest (ad_id, interested_email, is_approve, notes, is_rejected) VALUES (?, ?, 0, ?, 0)`;
+  db.run(sql, [ad_id, Email, notes], function (err) {
+    if (err) {
+      console.error("Database error:", err.message);
+      return res.status(500).send("Failed to send request of interest.");
+    }
+    console.log(`A row has been inserted with rowid ${this.lastID}`);
+    res.status(200).send({
+      message: `Request of interest sent successfully with ID ${this.lastID}`,
+      requestId: this.lastID,
+    });
+  });
+};
+
+const deleteRequestOfInterest = (req, res) => {
+  const request_id = parseInt(req.params.id, 10);
+  console.log("request_id", request_id);
+
+  if (isNaN(request_id)) {
+    return res.status(400).json({ message: "Request ID must be a number." });
+  }
+
+  const sql = "DELETE FROM RequestsOfInterest WHERE id = ?";
+
+  db.run(sql, [request_id], function (err) {
+    if (err) {
+      console.error("Database error:", err.message);
+      return res.status(500).send("Failed to delete request of interest.");
+    }
+    if (this.changes > 0) {
+      return res.status(200).send("Request of interest deleted successfully.");
+    } else {
+      return res
+        .status(404)
+        .send("Request of interest not found for the provided ID.");
+    }
+  });
+};
+
+const getUnapprovedRequests = (req, res) => {
+  const ownerEmail = req.params.Email;
+
+  if (!ownerEmail) {
+    return res.status(400).json({ message: "Owner email is required." });
+  }
+
+  const sql = `
+    SELECT 
+      r.*,
+      a.price,
+      a.imageUrl1,
+      a.city,
+      a.address,
+      a.apartment_number,
+      a.rooms,
+      a.floor,
+      a.square_meter,
+      u.FirstName,
+      u.PhoneNumber
+    FROM 
+      RequestsOfInterest r
+    JOIN 
+      MyRentalAds a ON r.ad_id = a.id
+    JOIN 
+      Users u ON r.interested_email = u.Email
+    WHERE 
+      a.user_email = ? AND r.is_approve = 0 AND r.is_rejected = 0;
+  `;
+
+  db.all(sql, [ownerEmail], (err, rows) => {
+    if (err) {
+      console.error("Database error:", err.message);
+      res.status(500).send("Error fetching requests of interest");
+      return;
+    }
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "No unapproved requests found" });
+    } else {
+      return res.status(200).json(rows);
+    }
+  });
+};
+
+const getRequestOfInterest = (req, res) => {
+  const Email = req.params.Email;
+
+  if (!Email) {
+    return res.status(400).json({ message: "User email is required." });
+  }
+
+  const sql = `
+    SELECT 
+      r.*,
+      a.price,
+      a.imageUrl1,
+      a.city,
+      a.address,
+      a.apartment_number,
+      a.rooms,
+      a.floor,
+      a.square_meter,
+      u.FirstName,
+      u.PhoneNumber
+    FROM 
+      RequestsOfInterest r
+    INNER JOIN 
+      MyRentalAds a ON r.ad_id = a.id
+    INNER JOIN 
+      Users u ON a.user_email = u.Email
+    WHERE 
+      r.interested_email = ? AND r.is_approve = 0;
+  `;
+
+  db.all(sql, [Email], (err, rows) => {
+    if (err) {
+      console.error("Database error:", err.message);
+      res.status(500).send("Error fetching requests of interest");
+      return;
+    }
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "No requests found" });
+    } else {
+      return res.status(200).json(rows);
+    }
+  });
+};
+
 module.exports = {
   insertApartmentAd,
   savePDF,
@@ -256,4 +397,8 @@ module.exports = {
   incrementApartmentViews,
   getAllAdsForOwner,
   deleteApartmentAd,
+  sendRequestOfInterest,
+  deleteRequestOfInterest,
+  getUnapprovedRequests,
+  getRequestOfInterest,
 };
