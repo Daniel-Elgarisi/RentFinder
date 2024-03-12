@@ -11,6 +11,10 @@ const {
   incrementApartmentViews,
   getAllAdsForOwner,
   deleteApartmentAd,
+  sendRequestOfInterest,
+  deleteRequestOfInterest,
+  getUnapprovedRequests,
+  getRequestOfInterest,
 } = require("../controllers/apartmentController");
 
 router.get("/display-all-apartments", getAllApartments);
@@ -24,5 +28,9 @@ router.get(
 );
 router.get("/get-allAdsForOwner/:Email", getAllAdsForOwner);
 router.delete("/delete-apartmentAd/:ad_id", deleteApartmentAd);
+router.post("/send-requestOfInterest/:ad_id", sendRequestOfInterest);
+router.delete("/delete-requestOfInterest/:id", deleteRequestOfInterest);
+router.get("/get-unapprovedRequests/:Email", getUnapprovedRequests);
+router.get("/get-requestOfInterest/:Email", getRequestOfInterest);
 
 module.exports = router;
