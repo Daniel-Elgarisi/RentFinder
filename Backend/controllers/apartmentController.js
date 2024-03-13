@@ -499,6 +499,44 @@ const rejectRequestOfInterest = (req, res) => {
   });
 };
 
+const getAmountOfRequestOfRequest = (req, res) => {
+  const Email = req.params.Email;
+
+  if (!Email) {
+    return res.status(400).json({ message: "User email is required." });
+  }
+
+  const receivedRequestsSql = `
+    SELECT COUNT(*) AS count
+    FROM RequestsOfInterest r
+    JOIN MyRentalAds a ON r.ad_id = a.id
+    WHERE a.user_email = ? AND r.is_approve = 0 AND r.is_rejected = 0
+  `;
+
+  const submittedRequestsSql = `
+    SELECT COUNT(*) AS count
+    FROM RequestsOfInterest
+    WHERE interested_email = ? AND ((is_approve = 1 AND is_rejected = 0) OR (is_approve = 0 AND is_rejected = 1))
+  `;
+
+  db.get(receivedRequestsSql, [Email], (err, receivedRow) => {
+    if (err) {
+      console.error("Database error (received requests):", err.message);
+      return res.status(500).send("Error fetching received requests count.");
+    }
+
+    db.get(submittedRequestsSql, [Email], (err, submittedRow) => {
+      if (err) {
+        console.error("Database error (submitted requests):", err.message);
+        return res.status(500).send("Error fetching submitted requests count.");
+      }
+
+      const totalAmount = receivedRow.count + submittedRow.count;
+      return res.status(200).json({ totalAmount });
+    });
+  });
+};
+
 module.exports = {
   insertApartmentAd,
   savePDF,
@@ -514,4 +552,5 @@ module.exports = {
   getRequestOfInterest,
   approveRequestOfInterest,
   rejectRequestOfInterest,
+  getAmountOfRequestOfRequest,
 };

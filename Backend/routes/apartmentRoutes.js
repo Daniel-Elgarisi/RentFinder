@@ -16,6 +16,7 @@ const {
   getRequestOfInterest,
   approveRequestOfInterest,
   rejectRequestOfInterest,
+  getAmountOfRequestOfRequest,
 } = require("../controllers/apartmentController");
 
 router.get("/display-all-apartments", getAllApartments);
@@ -35,5 +36,9 @@ router.get("/get-unapprovedRequests/:Email", getUnapprovedRequests);
 router.get("/get-requestOfInterest/:Email", getRequestOfInterest);
 router.post("/approve-requestOfInterest/:ad_id", approveRequestOfInterest);
 router.post("/reject-requestOfInterest/:request_id", rejectRequestOfInterest);
+router.get(
+  "/get-amountOfRequestOfInterest/:Email",
+  getAmountOfRequestOfRequest
+);
 
 module.exports = router;
