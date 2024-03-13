@@ -234,20 +234,45 @@ const getAllAdsForOwner = (req, res) => {
 const deleteApartmentAd = (req, res) => {
   const ad_id = parseInt(req.params.ad_id, 10);
   console.log("ad_id", ad_id);
-  const sql = "DELETE FROM MyRentalAds WHERE id = ?";
 
-  db.run(sql, [ad_id], function (err) {
-    if (err) {
-      console.error("Database error:", err.message);
-      return res.status(500).send("Failed to delete apartment ad.");
-    }
-    if (this.changes > 0) {
-      return res.status(200).send("Apartment ad deleted successfully.");
-    } else {
-      return res
-        .status(404)
-        .send("Apartment ad not found for the provided user.");
-    }
+  if (isNaN(ad_id)) {
+    return res.status(400).json({ message: "Ad ID must be a number." });
+  }
+
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION;");
+
+    const deleteRequestsSql = "DELETE FROM RequestsOfInterest WHERE ad_id = ?";
+
+    db.run(deleteRequestsSql, [ad_id], function (err) {
+      if (err) {
+        console.error("Database error:", err.message);
+        db.run("ROLLBACK;");
+        return res
+          .status(500)
+          .send("Failed to delete related requests of interest.");
+      }
+
+      const deleteAdSql = "DELETE FROM MyRentalAds WHERE id = ?";
+
+      db.run(deleteAdSql, [ad_id], function (err) {
+        if (err) {
+          console.error("Database error:", err.message);
+          db.run("ROLLBACK;");
+          return res.status(500).send("Failed to delete apartment ad.");
+        }
+
+        if (this.changes > 0) {
+          db.run("COMMIT;");
+          return res.status(200).send("Apartment ad deleted successfully.");
+        } else {
+          db.run("ROLLBACK;");
+          return res
+            .status(404)
+            .send("Apartment ad not found for the provided ID.");
+        }
+      });
+    });
   });
 };
 
@@ -371,7 +396,7 @@ const getRequestOfInterest = (req, res) => {
     INNER JOIN 
       Users u ON a.user_email = u.Email
     WHERE 
-      r.interested_email = ? AND r.is_approve = 0;
+      r.interested_email = ?;
   `;
 
   db.all(sql, [Email], (err, rows) => {
@@ -384,6 +409,92 @@ const getRequestOfInterest = (req, res) => {
       return res.status(404).json({ message: "No requests found" });
     } else {
       return res.status(200).json(rows);
+    }
+  });
+};
+
+const approveRequestOfInterest = (req, res) => {
+  const ad_id = parseInt(req.params.ad_id, 10);
+  const request_id = parseInt(req.body.id, 10);
+
+  if (isNaN(ad_id) || isNaN(request_id)) {
+    return res.status(400).send("Invalid apartment ID or request ID.");
+  }
+
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION;");
+
+    const updateRequestSql = `UPDATE RequestsOfInterest SET is_approve = 1 WHERE id = ? AND ad_id = ?`;
+    db.run(updateRequestSql, [request_id, ad_id], function (err) {
+      if (err) {
+        console.error("Error updating RequestsOfInterest:", err.message);
+        db.run("ROLLBACK;");
+        return res
+          .status(500)
+          .send("Failed to approve the request of interest.");
+      }
+
+      if (this.changes === 0) {
+        db.run("ROLLBACK;");
+        return res
+          .status(404)
+          .send("Request of interest not found or already approved.");
+      }
+
+      const updateAdSql = `UPDATE MyRentalAds SET IsRented = 1 WHERE id = ?`;
+      db.run(updateAdSql, [ad_id], function (err) {
+        if (err) {
+          console.error("Error updating MyRentalAds:", err.message);
+          db.run("ROLLBACK;");
+          return res
+            .status(500)
+            .send("Failed to mark the apartment as rented.");
+        }
+
+        if (this.changes === 0) {
+          db.run("ROLLBACK;");
+          return res
+            .status(404)
+            .send("Apartment ad not found or already rented.");
+        }
+
+        db.run("COMMIT;", (err) => {
+          if (err) {
+            console.error("Error committing the transaction:", err.message);
+            return res.status(500).send("Failed to commit the transaction.");
+          }
+          return res
+            .status(200)
+            .send(
+              "Request of interest approved and apartment marked as rented successfully."
+            );
+        });
+      });
+    });
+  });
+};
+
+const rejectRequestOfInterest = (req, res) => {
+  const request_id = parseInt(req.params.request_id, 10);
+  console.log("request_id: ", request_id);
+
+  if (isNaN(request_id)) {
+    return res.status(400).send("Invalid request ID.");
+  }
+
+  const sql = `UPDATE RequestsOfInterest SET is_rejected = 1 WHERE id = ?`;
+  db.run(sql, [request_id], function (err) {
+    if (err) {
+      console.error("Error updating RequestsOfInterest:", err.message);
+      return res.status(500).send("Failed to reject the request of interest.");
+    }
+
+    if (this.changes === 0) {
+      return res
+        .status(404)
+        .send("Request of interest not found or already rejected.");
+    } else {
+      return res.status(200).send("Request of interest rejected successfully.");
     }
   });
 };
@@ -401,4 +512,6 @@ module.exports = {
   deleteRequestOfInterest,
   getUnapprovedRequests,
   getRequestOfInterest,
+  approveRequestOfInterest,
+  rejectRequestOfInterest,
 };
