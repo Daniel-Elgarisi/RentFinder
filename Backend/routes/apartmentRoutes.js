@@ -1,4 +1,3 @@
-// routes/apartmentRoutes.js
 const express = require("express");
 const router = express.Router();
 const { upload, uploadPhotos } = require("../utils/multerConfig");
@@ -15,6 +14,8 @@ const {
   deleteRequestOfInterest,
   getUnapprovedRequests,
   getRequestOfInterest,
+  approveRequestOfInterest,
+  rejectRequestOfInterest,
 } = require("../controllers/apartmentController");
 
 router.get("/display-all-apartments", getAllApartments);
@@ -32,5 +33,7 @@ router.post("/send-requestOfInterest/:ad_id", sendRequestOfInterest);
 router.delete("/delete-requestOfInterest/:id", deleteRequestOfInterest);
 router.get("/get-unapprovedRequests/:Email", getUnapprovedRequests);
 router.get("/get-requestOfInterest/:Email", getRequestOfInterest);
+router.post("/approve-requestOfInterest/:ad_id", approveRequestOfInterest);
+router.post("/reject-requestOfInterest/:request_id", rejectRequestOfInterest);
 
 module.exports = router;
