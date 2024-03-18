@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const db = require("../DB");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 router.post("/register", register);
@@ -70,8 +71,17 @@ async function login(req, res) {
 
     const passwordMatch = await bcrypt.compare(Password, user.Password);
     if (passwordMatch) {
+      console.log(user.FirstName);
+      const token = jwt.sign(
+        { userId: user.Id, email: user.Email, firstName: user.FirstName },
+        process.env.JWT_SECRET,
+        { expiresIn: "24h" }
+      );
+
       return res.status(200).json({
         Email: user.Email,
+        firstName: user.FirstName,
+        token: token,
       });
     } else {
       return res.status(401).json({ message: "Incorrect password." });
