@@ -6,6 +6,11 @@ const http = require("http");
 const { Server } = require("socket.io");
 const jwt = require("jsonwebtoken");
 
+if (!process.env.JWT_SECRET) {
+  console.error("FATAL ERROR: JWT_SECRET is not defined.");
+  process.exit(1);
+}
+
 const app = express();
 const server = http.createServer(app);
 
@@ -22,15 +27,11 @@ const io = new Server(server, {
   },
 });
 
-// Middleware for JWT verification
 io.use((socket, next) => {
-  // Get the token from the query parameters
   const token = socket.handshake.auth.token;
 
-  // Log for debugging
   console.log("Received token:", token);
 
-  // Verify the token
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
@@ -48,20 +49,31 @@ io.use((socket, next) => {
 
 // Event handlers
 io.on("connection", (socket) => {
-  console.log("A user connected with socket ID:", socket.id);
+  console.log(
+    `User connected with socket ID: ${socket.id}, user ID: ${
+      socket.user ? socket.user.userId : "unknown"
+    }`
+  );
 
   socket.on("joinRoom", (roomId) => {
     socket.join(roomId);
     console.log(`User ${socket.id} joined room: ${roomId}`);
+    io.to(roomId).emit(
+      "notification",
+      `User ${socket.id} has joined the room.`
+    );
   });
 
   socket.on("sendMessage", ({ roomId, message }) => {
+    console.log(
+      `Message received in room ${roomId} from user ${socket.id}: ${message}`
+    );
     io.to(roomId).emit("message", {
       text: message,
-      sender: socket.id,
+      sender: socket.user.firstName,
       timestamp: new Date().toISOString(),
     });
-    console.log(`Message sent to room: ${roomId}: ${message}`);
+    console.log(`Message from ${socket.user.firstName}: ${message}`);
   });
 
   socket.on("disconnect", () => {
@@ -85,7 +97,6 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/apartments", apartmentRoutes);
 
-// Server listen
 const port = process.env.PORT || 5000;
 server.listen(port, () => {
   console.log(`HTTP Server running on port ${port}`);
